@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="hpms.app.chat" default="jar">
+
+   <property name="main-class" value="${ant.project.name}.Main" />
+   <property name="main-icon" location="src/hpms/app/chat/icon_256x256.png" />
+
+   <import file="../../common-build.xml" />
+
+   <property name="modules.path" value="${libs.fx}:${libs}:${libs.hpms}" />
+
+   <macrodef name="publish">
+      <attribute name="address" />
+      <attribute name="account" />
+      <sequential>
+         <exec executable="scp">
+            <arg value="${jar}" />
+            <arg value="aubin@@@{address}:/home/apps/libs/hpms/${ant.project.name}.jar" />
+         </exec>
+         <exec executable="scp">
+            <arg value="${main-icon}" />
+            <arg value="aubin@@@{address}:/home/apps/${ant.project.name}/" />
+         </exec>
+         <exec executable="scp">
+            <arg value="@{account}-chat.sh" />
+            <arg value="aubin@@@{address}:/home/apps/${ant.project.name}/" />
+         </exec>
+      </sequential>
+   </macrodef>
+
+   <target name="publish-for-aubin" depends="jar">
+      <exec executable="cp"><!-- copy task doesn't preserve file permissions -->
+         <arg value="aubin-chat.sh" />
+         <arg value="/home/apps/${ant.project.name}/" />
+      </exec>
+   </target>
+
+   <target name="publish-for-eve" depends="jar">
+      <publish address="192.168.1.23" account="eve" />
+   </target>
+
+   <target name="publish-for-muriel" depends="jar">
+      <publish address="192.168.1.40" account="muriel" />
+   </target>
+
+   <target name="publish-for-all" depends="jar">
+      <antcall target="publish-for-muriel" />
+      <antcall target="publish-for-eve" />
+      <antcall target="publish-for-aubin" />
+   </target>
+
+   <target name="run-help" depends="jar">
+      <java fork="true" module="${ant.project.name}/${main-class}">
+         <jvmarg value="--module-path=${modules.path}" />
+         <arg value="--help" />
+      </java>
+   </target>
+
+   <target name="run-aubin" depends="jar">
+      <java fork="true" module="${ant.project.name}/${main-class}">
+         <jvmarg value="--module-path=${modules.path}" />
+         <arg value="--user=Le titi papatte" />
+      </java>
+   </target>
+
+   <target name="run-eve" depends="jar">
+      <java fork="true" module="${ant.project.name}/${main-class}">
+         <jvmarg value="--module-path=${modules.path}" />
+         <arg value="--user=La vilaine souris" />
+      </java>
+   </target>
+
+   <target name="run-muriel" depends="jar">
+      <java fork="true" module="${ant.project.name}/${main-class}">
+         <jvmarg value="--module-path=${modules.path}" />
+         <arg value="--user=Mimine la terrible" />
+      </java>
+   </target>
+
+</project>
