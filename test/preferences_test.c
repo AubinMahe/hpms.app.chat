@@ -1,4 +1,5 @@
-#include "preferences.h"
+#include <utils/preferences.h>
+
 #include "tests_utils.h"
 #include "all_tests.h"
 

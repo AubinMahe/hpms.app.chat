@@ -1,8 +1,10 @@
-# C chat low level operations #
+# YACA in std11 C #
 
-This program read its standard input for commands and print on the standard output the messages received from the network.
+**Y**et **A**nother **C**hat **A**pplication... :-)
 
 ## Commands ##
+
+This program read its standard input for commands and print on the standard output the messages received from the network.
 
 Commands are:
 * debug, argument is `true` or `false`

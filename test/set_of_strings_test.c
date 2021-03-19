@@ -1,4 +1,5 @@
-#include "set_of_strings.h"
+#include <utils/set_of_strings.h>
+
 #include "tests_utils.h"
 #include "all_tests.h"
 

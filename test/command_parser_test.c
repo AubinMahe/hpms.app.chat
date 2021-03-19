@@ -1,4 +1,5 @@
-#include "command_parser.h"
+#include <chat/command_parser.h>
+
 #include "tests_utils.h"
 #include "all_tests.h"
 

@@ -1,4 +1,4 @@
-# YACA #
+# YACA in pure Java #
 
 **Y**et **A**nother **C**hat **A**pplication... :-)
 
@@ -10,4 +10,8 @@
 
 # Depends on #
 
-* Java, at least 8.
+* Pure Java, at least 8.
+
+# Ports #
+
+A C version exist in [src-c](src-c) forlder, with its own [README](src-c/README.md)

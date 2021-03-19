@@ -1,7 +1,8 @@
 #include "chat.h"
-#include "set_of_strings.h"
-#include "net_buff.h"
-#include "preferences.h"
+
+#include <utils/set_of_strings.h>
+#include <utils/net_buff.h>
+#include <utils/preferences.h>
 
 #include <ifaddrs.h>
 #include <limits.h>

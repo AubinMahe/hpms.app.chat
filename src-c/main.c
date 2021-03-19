@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "chat.h"
-#include "command_parser.h"
+#include "chat/chat.h"
+#include "chat/command_parser.h"
 
 static void printer( const char * pseudo, const char * message ) {
    printf( "%s: %s\n", pseudo, message );
