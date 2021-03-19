@@ -2,10 +2,12 @@
 /build/
 /depcache/
 /.settings/
-/Debug/
-/Unitaire/
-/chat
 /BUILD/
-/tests
+/Debug/
 /Release/
+/Unitaire/
 /libchat.so
+/libchat-d.so
+/chat
+/chat-d
+/tests-d
