@@ -6,6 +6,8 @@
 
 This program read its standard input for commands and print on the standard output the messages received from the network.
 
+This program used libchat.so which may be used in anoter application, its API is documented in (chat.h)[src-c/chat/chat.h].
+
 Commands are:
 * debug, argument is `true` or `false`
 * join, argument are `pseudo` a string, `mcast` an IP v4 address in range 239.0.0.0/8 and `port` greater then 1024
