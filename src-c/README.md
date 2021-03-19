@@ -6,7 +6,7 @@
 
 This program read its standard input for commands and print on the standard output the messages received from the network.
 
-This program used libchat.so which may be used in anoter application, its API is documented in [chat.h](src-c/chat/chat.h).
+This program used libchat.so which may be used in anoter application, its API is documented in [chat.h](chat/chat.h).
 
 Commands are:
 * debug, argument is `true` or `false`
