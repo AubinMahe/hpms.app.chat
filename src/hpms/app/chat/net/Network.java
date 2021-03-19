@@ -43,7 +43,7 @@ public class Network implements Runnable {
    public void join( String pseudo, String mcast, int port ) throws IOException {
       if( _socket != null ) {
          if( _debug ) {
-            System.err.printf( "%s.join|Socket is null, exiting.\n", getClass().getName());
+            System.err.printf( "%s.join|Socket is not null, exiting.\n", getClass().getName());
          }
          return;
       }

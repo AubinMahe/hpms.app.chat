@@ -1,3 +1,9 @@
 /bin/
 /build/
 /depcache/
+/.settings/
+/Debug/
+/Unitaire/
+/chat
+/BUILD/
+/tests

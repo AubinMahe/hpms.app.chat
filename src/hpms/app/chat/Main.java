@@ -35,7 +35,7 @@ public class Main extends Application {
 
    private static final String DEFAULT_USERNAME = System.getProperty( "user.name" );
    private static final int    DEFAULT_PORT     = 2416;
-   private static final String DEFAULT_ADDRESS  = "224.0.0.24";
+   private static final String DEFAULT_ADDRESS  = "239.0.0.0";
 
    private Stage    _mainWindow;
    private ChatCtrl _ctrl;
