@@ -1,5 +1,5 @@
 #pragma once
 
-void command_parser_test( TST_context * ctxt );
-void utils_set_test     ( TST_context * ctxt );
-void utils_prefs_test   ( TST_context * ctxt );
+#include "tests_report.h"
+
+void command_parser_test( struct tests_report * report );
