@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include <utils/visibility.h>
+#include <utils/utils_visibility.h>
 
 #ifdef __cplusplus
 extern "C" {

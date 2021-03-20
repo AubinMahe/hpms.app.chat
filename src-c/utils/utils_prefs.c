@@ -1,5 +1,5 @@
-#include "preferences.h"
-#include "map_of_strings.h"
+#include <utils/utils_prefs.h>
+#include <utils/utils_map.h>
 
 #include <ctype.h>
 #include <limits.h>
@@ -8,10 +8,16 @@
 #include <string.h>
 
 typedef struct {
-   char           rcpath[PATH_MAX];
-   map_of_strings map;
+   char      rcpath[PATH_MAX];
+   utils_map map;
 } preferences_private;
 
+
+static int property_name_compare( const void * l, const void * r ) {
+   const char * const * pl = (const char * const *)l;
+   const char * const * pr = (const char * const *)r;
+   return strcmp( *pl, *pr );
+}
 
 bool preferences_load( preferences * prefs, const char * program_name ) {
    if(( prefs == NULL )||( program_name == NULL )) {
@@ -43,7 +49,7 @@ bool preferences_load( preferences * prefs, const char * program_name ) {
    if( chatrc == NULL ) {
       return false;
    }
-   if( ! map_of_strings_new( &This->map )) {
+   if( ! utils_map_new( &This->map, property_name_compare )) {
       return false;
    }
    char buffer[2000];
@@ -81,7 +87,7 @@ bool preferences_load( preferences * prefs, const char * program_name ) {
          while( isspace( *--end ));
          *++end = '\0';
       }
-      map_of_strings_put( This->map, prop_name, strdup( sep ));
+      utils_map_put( This->map, strdup( prop_name ), strdup( sep ));
    }
    fclose( chatrc );
    return true;
@@ -150,7 +156,7 @@ bool preferences_get_string( preferences prefs, const char * name, const char **
    }
    preferences_private * This = (preferences_private *)prefs;
    void * result = NULL;
-   map_of_strings_get( This->map, name, &result );
+   utils_map_get( This->map, name, &result );
    *value = result;
    return true;
 }
@@ -160,7 +166,7 @@ bool preferences_delete( preferences * prefs ) {
       return false;
    }
    preferences_private * This = (preferences_private *)*prefs;
-   map_of_strings_delete( &This->map, true );
+   utils_map_delete( &This->map, true );
    free( This );
    *prefs = NULL;
    return true;

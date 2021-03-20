@@ -6,10 +6,10 @@ CFLAGS = -pthread -std=c11 -I src-c -fvisibility=hidden -D_DEFAULT_SOURCE=__STRI
 SRCS_LIB =\
  src-c/chat/chat.c\
  src-c/chat/command_parser.c\
- src-c/utils/net_buff.c\
- src-c/utils/map_of_strings.c\
- src-c/utils/preferences.c\
- src-c/utils/set_of_strings.c
+ src-c/net/net_buff.c\
+ src-c/utils/utils_map.c\
+ src-c/utils/utils_prefs.c\
+ src-c/utils/utils_set.c
 
 SRCS_EXE = src-c/main.c
 SRCS_TST =\

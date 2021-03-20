@@ -1,11 +1,11 @@
-#include <utils/preferences.h>
+#include <utils/utils_prefs.h>
 
 #include "tests_utils.h"
 #include "all_tests.h"
 
 #include <string.h>
 
-void preferences_test( TST_context * ctxt ) {
+void utils_prefs_test( TST_context * ctxt ) {
    TST_chapter( ctxt, "Preferences" );
    preferences prefs = NULL;
    const char *   address = NULL;

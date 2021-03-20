@@ -1,8 +1,8 @@
 #include "chat.h"
 
-#include <utils/set_of_strings.h>
-#include <utils/net_buff.h>
-#include <utils/preferences.h>
+#include <utils/utils_set.h>
+#include <utils/utils_prefs.h>
+#include <net/net_buff.h>
 
 #include <ifaddrs.h>
 #include <limits.h>
@@ -16,6 +16,7 @@
 #include <net/if.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <unistd.h>
 
 #define USERNAME_MAX    (32+1)
 #define PSEUDO_MAX      40
@@ -37,11 +38,17 @@ typedef struct {
    bool                  is_alive;
    char                  localID[USERNAME_MAX+1+15+1+5];
    char                  pseudo[PSEUDO_MAX];
-   set_of_strings        friends;
+   utils_set             friends;
    net_buff              recv_buff;
    net_buff              send_buff;
    pthread_t             thread;
 } chat_private;
+
+static int friend_compare( const void * l, const void * r ) {
+   const char * const * pl = (const char * const *)l;
+   const char * const * pr = (const char * const *)r;
+   return strcmp( *pl, *pr );
+}
 
 bool chat_new( chat * ac, chat_message_consumer consumer ) {
    if( ac == NULL ) {
@@ -70,20 +77,20 @@ bool chat_new( chat * ac, chat_message_consumer consumer ) {
    else {
       snprintf( This->username, USERNAME_MAX, "%s", "???" );
    }
-   if( ! set_of_strings_new( &This->friends )) {
+   if( ! utils_set_new( &This->friends, friend_compare )) {
       free( This );
       *ac = NULL;
       return false;
    }
    if( ! net_buff_new( &This->recv_buff, PAYLOAD_MAX )) {
-      set_of_strings_delete( &This->friends );
+      utils_set_delete( &This->friends, true );
       free( This );
       *ac = NULL;
       return false;
    }
    if( ! net_buff_new( &This->send_buff, PAYLOAD_MAX )) {
       net_buff_delete( &This->recv_buff );
-      set_of_strings_delete( &This->friends );
+      utils_set_delete( &This->friends, true );
       free( This );
       *ac = NULL;
       return false;
@@ -182,13 +189,13 @@ static void * chat_receive_thread( void * arg ) {
                fprintf( stderr, "%s|message: '%s'\n", __func__, message );
             }
             if( 0 == strcmp( JOIN_MSG, message )) {
-               if( set_of_strings_contains( This->friends, remoteID )) {
+               if( utils_set_contains( This->friends, remoteID )) {
                   if( This->verbosity == DETAILS ) {
                      fprintf( stderr, "%s|message discarded because it's already seen before.\n", __func__);
                   }
                }
                else {
-                  set_of_strings_add( This->friends, remoteID );
+                  utils_set_add( This->friends, strdup( remoteID ));
                   if( This->verbosity == DETAILS ) {
                      fprintf( stderr, "%s|new friend discovered: '%s'.\n", __func__, remoteID );
                   }
@@ -201,7 +208,7 @@ static void * chat_receive_thread( void * arg ) {
                   if( This->verbosity == DETAILS ) {
                      fprintf( stderr, "%s|friend %s has leaved the group.\n", __func__, remoteID );
                   }
-                  set_of_strings_remove( This->friends, remoteID );
+                  utils_set_remove( This->friends, remoteID, true );
                }
                This->consumer( pseudo, message );
             }
@@ -322,9 +329,10 @@ bool chat_leave( chat ac ) {
       return false;
    }
    This->is_alive = false;
+   close( This->sckt );
    void * retVal = NULL;
    pthread_join( This->thread, &retVal );
-   return set_of_strings_clear( This->friends );
+   return utils_set_clear( This->friends, true );
 }
 
 bool chat_close( chat * ac ) {
@@ -337,7 +345,7 @@ bool chat_close( chat * ac ) {
       if( This->is_alive ) {
          chat_leave( *ac );
       }
-      set_of_strings_delete( &This->friends );
+      utils_set_delete( &This->friends, true );
       net_buff_delete( &This->recv_buff );
       net_buff_delete( &This->send_buff );
       free( *ac );

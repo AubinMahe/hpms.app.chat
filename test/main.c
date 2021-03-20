@@ -31,13 +31,13 @@ int main( int argc, char * argv[] ) {
    }
    TST_context ctxt = TST_context_Zero;
    if( do_set_of_strings ) {
-      set_of_strings_test( &ctxt );
+      utils_set_test     ( &ctxt );
    }
    if( do_command_parser ) {
       command_parser_test( &ctxt );
    }
    if( do_preferences ) {
-      preferences_test( &ctxt );
+      utils_prefs_test   ( &ctxt );
    }
    TST_ended( &ctxt );
    return EXIT_SUCCESS;
